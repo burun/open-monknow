@@ -10,14 +10,16 @@
 
 ## 安装
 
-目前以源码和本地构建包安装，尚未上架 Chrome 应用商店。
+推荐使用 [GitHub Release](https://github.com/burun/open-monknow/releases/latest) 的插件安装包，尚未上架 Chrome 应用商店。
 
-1. [下载源码 ZIP](https://github.com/burun/open-monknow/archive/refs/heads/main.zip) 并解压，或运行 `git clone https://github.com/burun/open-monknow.git`。
+1. 下载发布附件 `open-monknow-0.1.1.zip`，解压后保留其中的 `open-monknow` 文件夹。
 2. 打开 `chrome://extensions`，开启右上角「开发者模式」。
-3. 点击「加载已解压的扩展程序」，选择解压目录中的 **`extension` 文件夹**。
+3. 点击「加载已解压的扩展程序」，选择直接包含 `manifest.json` 的 **`open-monknow` 文件夹**。
 4. 新开标签页。如果 Chrome 提示新标签页已被更改，选择保留；若另一个扩展仍在接管新标签页，将它停用。
 
 需要 Chrome 120+。安装无需 Node.js，也不需要编译。不要直接加载 ZIP 或项目最外层目录；已加载的文件夹需要保留在原位置。
+
+完整步骤见 [安装与更新说明](docs/installation.md)，安装包内也附有 `INSTALL.md`。如果使用 [源码 ZIP](https://github.com/burun/open-monknow/archive/refs/heads/main.zip) 或 `git clone`，应选择源码里的 `extension` 文件夹，而非 Release 的 `open-monknow` 文件夹。
 
 **更新已有安装：** 在同一路径更新文件，在扩展管理页点击本插件的「重新加载」，再新开标签页。不要卸载后重装，以免丢失数据。0.1.1 新增 `favicon` 权限，如 Chrome 提示权限变化，允许后继续使用。
 

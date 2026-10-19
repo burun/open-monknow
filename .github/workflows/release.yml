@@ -1,0 +1,76 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v[0-9]*'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Verify tag and package versions
+        run: |
+          node --input-type=module <<'NODE'
+          import assert from 'node:assert/strict';
+          import { readFile } from 'node:fs/promises';
+          const tag = process.env.GITHUB_REF_NAME;
+          assert.match(tag, /^v\d+\.\d+\.\d+$/);
+          const manifest = JSON.parse(await readFile('extension/manifest.json', 'utf8'));
+          const pkg = JSON.parse(await readFile('package.json', 'utf8'));
+          assert.equal(tag, `v${manifest.version}`);
+          assert.equal(pkg.version, manifest.version);
+          await readFile(`docs/releases/${tag}.md`);
+          NODE
+      - run: npm run check
+      - run: npm test
+      - run: npm run build
+      - name: Create draft, upload assets, and publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          if gh release view "$RELEASE_TAG" --json isDraft --jq '.isDraft' > "$RUNNER_TEMP/release-is-draft"; then
+            if [[ "$(cat "$RUNNER_TEMP/release-is-draft")" != "true" ]]; then
+              echo 'A published release already exists; refusing to replace its assets.' >&2
+              exit 1
+            fi
+          else
+            gh release create "$RELEASE_TAG" --draft --verify-tag \
+              --title "Open Monknow $RELEASE_TAG" \
+              --notes-file "docs/releases/$RELEASE_TAG.md"
+          fi
+          gh release upload "$RELEASE_TAG" \
+            "dist/open-monknow-${RELEASE_TAG#v}.zip#Chrome extension ZIP" \
+            'dist/INSTALL.md#Installation guide / 安装说明' \
+            'dist/SHA256SUMS.txt#SHA-256 checksums' --clobber
+          gh api "repos/$GH_REPO/releases/tags/$RELEASE_TAG" > "$RUNNER_TEMP/release.json"
+          node --input-type=module <<'NODE'
+          import assert from 'node:assert/strict';
+          import { readFile } from 'node:fs/promises';
+          import { createHash } from 'node:crypto';
+          const release = JSON.parse(await readFile(`${process.env.RUNNER_TEMP}/release.json`, 'utf8'));
+          for (const name of [`open-monknow-${process.env.RELEASE_TAG.slice(1)}.zip`, 'INSTALL.md', 'SHA256SUMS.txt']) {
+            const file = await readFile(`dist/${name}`);
+            const asset = release.assets.find(item => item.name === name);
+            assert.ok(asset, `Missing asset: ${name}`);
+            assert.equal(asset.state, 'uploaded');
+            assert.equal(asset.size, file.length);
+            if (asset.digest) assert.equal(asset.digest, `sha256:${createHash('sha256').update(file).digest('hex')}`);
+          }
+          NODE
+          gh release edit "$RELEASE_TAG" --draft=false --latest
+          gh release view "$RELEASE_TAG" --json url --jq '.url' >> "$GITHUB_STEP_SUMMARY"

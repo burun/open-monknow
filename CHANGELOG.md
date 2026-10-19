@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Publish versioned GitHub Releases from tags, with an unpacked extension ZIP, installation guide, and SHA-256 checksums; include the installation guide inside the ZIP.
+
 - Prepare the repository for open-source distribution with bilingual READMEs, contribution, privacy, security, development, and licensing documentation.
 - Add continuous integration for resource checks, unit tests, and build validation.
 - Remove the bundled Are.na favicon, whose redistribution license was not established; use Chrome's favicon resource instead.

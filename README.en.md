@@ -12,12 +12,14 @@ This is an independent project, unaffiliated with MONKNOW. [REA](https://github.
 
 The extension is not published in the Chrome Web Store yet.
 
-1. [Download the source ZIP](https://github.com/burun/open-monknow/archive/refs/heads/main.zip) and extract it, or clone the repository.
+1. Download **`open-monknow-0.1.1.zip`** from [GitHub Releases](https://github.com/burun/open-monknow/releases/latest) and extract it.
 2. Open `chrome://extensions` and enable **Developer mode**.
-3. Choose **Load unpacked** and select the **`extension` directory** inside the extracted project.
+3. Choose **Load unpacked** and select the **`open-monknow` directory** that directly contains `manifest.json`.
 4. Open a new tab. Accept Chrome's new-tab change prompt if shown, and disable another new-tab extension if it takes precedence.
 
 Chrome 120+ is required. Installation needs no Node.js or build step. Keep the loaded directory in place. To update, replace files at the same path, reload the extension, and open a new tab. Export a backup before uninstalling; uninstalling removes extension data. Version 0.1.1 adds the `favicon` permission, which Chrome may ask you to approve.
+
+See the [installation guide](docs/installation.md), also included as `INSTALL.md` inside the package and attached separately to the release. If you use a source ZIP or clone instead, load its `extension` subdirectory. The source archive and the installation package have different layouts.
 
 ## Features
 
