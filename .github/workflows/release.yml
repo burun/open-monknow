@@ -57,7 +57,8 @@ jobs:
             "dist/open-monknow-${RELEASE_TAG#v}.zip#Chrome extension ZIP" \
             'dist/INSTALL.md#Installation guide / 安装说明' \
             'dist/SHA256SUMS.txt#SHA-256 checksums' --clobber
-          gh api "repos/$GH_REPO/releases/tags/$RELEASE_TAG" > "$RUNNER_TEMP/release.json"
+          release_id="$(gh release view "$RELEASE_TAG" --json databaseId --jq '.databaseId')"
+          gh api "repos/$GH_REPO/releases/$release_id" > "$RUNNER_TEMP/release.json"
           node --input-type=module <<'NODE'
           import assert from 'node:assert/strict';
           import { readFile } from 'node:fs/promises';
