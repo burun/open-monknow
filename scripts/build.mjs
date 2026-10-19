@@ -1,0 +1,12 @@
+import { cp, mkdir, rm, readFile } from 'node:fs/promises';
+import { execFileSync } from 'node:child_process';
+await mkdir('dist', { recursive:true });
+await rm('dist/open-monknow', { recursive:true, force:true });
+await cp('extension', 'dist/open-monknow', { recursive:true });
+await cp('LICENSE', 'dist/open-monknow/LICENSE');
+await cp('THIRD_PARTY_NOTICES.md', 'dist/open-monknow/THIRD_PARTY_NOTICES.md');
+const { version } = JSON.parse(await readFile('extension/manifest.json', 'utf8'));
+const archive = `open-monknow-${version}.zip`;
+await rm(`dist/${archive}`, { force:true });
+execFileSync('zip', ['-qr', archive, 'open-monknow'], { cwd:'dist' });
+console.log(`Chrome unpacked folder: dist/open-monknow\nArchive: dist/${archive}`);

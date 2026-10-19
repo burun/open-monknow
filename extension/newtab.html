@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="referrer" content="no-referrer">
+  <title>新标签页 · Open Monknow</title>
+  <link rel="icon" href="assets/icon-48.png">
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <div id="wallpaper" aria-hidden="true"></div>
+  <aside class="sidebar" aria-label="网址分组">
+    <a class="brand" href="newtab.html" aria-label="Open Monknow 首页"><span class="brand-mark">m<span>·</span></span><span class="brand-name">monknow<span>OPEN EDITION</span></span></a>
+    <div class="nav-caption">我的空间</div>
+    <nav id="groups" aria-label="分组"></nav>
+    <button id="add-group" class="nav-add" aria-label="新建分组" title="新建分组"><span data-icon="plus"></span>新建分组</button>
+    <div class="sidebar-bottom"><span class="local-dot"></span>自由一点，刚刚好。<span class="version">v0.1.1</span></div>
+  </aside>
+  <main>
+    <header class="topbar"><div class="breadcrumb">我的空间<span>/</span><strong id="current-group">日常</strong></div><div class="top-actions"><span class="local-status"><span class="local-dot"></span>本地保存</span><button id="settings-button" class="icon-button" aria-label="打开设置" title="设置 · ⌘ ,"><span data-icon="settings"></span></button></div></header>
+    <section class="workspace" aria-label="新标签页">
+      <div class="clock-block" id="clock-block"><div class="greeting" id="greeting"></div><time id="clock" aria-label="当前时间">--:--</time><div class="date" id="date"></div></div>
+      <form id="search-form" class="search-form" role="search">
+        <label class="sr-only" for="engine">搜索引擎</label><select id="engine" aria-label="搜索引擎"><option value="google">Google</option><option value="bing">Bing</option><option value="baidu">百度</option><option value="duckduckgo">DuckDuckGo</option></select>
+        <span class="search-divider"></span><input id="search" type="search" placeholder="搜索，或输入网址" aria-label="搜索或输入网址" autocomplete="off" maxlength="2048" spellcheck="false"><kbd class="search-shortcut">/</kbd><button type="submit" class="search-submit" aria-label="搜索"><span data-icon="arrow-right"></span></button>
+      </form>
+      <section class="links-section" aria-labelledby="links-heading"><div class="section-top"><div><h1 id="links-heading">日常</h1><span id="link-count"></span></div><div><button id="edit-group" class="icon-button small" aria-label="编辑当前分组" title="编辑分组"><span data-icon="edit"></span></button><button id="add-link-top" class="text-button" aria-label="添加网址"><span data-icon="plus"></span>添加网址</button></div></div><div id="links" class="links-grid"></div><p class="grid-hint">拖动排列网址 · 拖到左侧可移动分组</p></section>
+    </section>
+    <footer><button id="wallpaper-button" class="footer-button"><span data-icon="image"></span><span id="wallpaper-name">纸间留白</span><span data-icon="chevron"></span></button><span class="footer-note">留一点空间，给今天。</span><button id="todo-button" class="footer-button"><span data-icon="check-square"></span>待办<span id="todo-count" class="count">0</span></button></footer>
+  </main>
+  <div id="scrim" class="scrim" hidden></div>
+  <aside id="drawer" class="drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title" hidden><div class="drawer-heading"><div><div class="eyebrow" id="drawer-eyebrow">MAKE IT YOURS</div><h2 id="drawer-title">按你的习惯</h2></div><button id="close-drawer" class="icon-button" aria-label="关闭面板"><span data-icon="close"></span></button></div><div id="drawer-content"></div></aside>
+  <dialog id="editor" aria-labelledby="editor-title"><form id="editor-form"><div class="modal-heading"><h2 id="editor-title">添加网址</h2><button type="button" id="close-editor" class="icon-button" aria-label="关闭编辑"><span data-icon="close"></span></button></div><div id="editor-fields"></div><p id="editor-error" class="error" role="alert"></p><div class="modal-actions"><button type="button" id="delete-item" class="danger-button" hidden>删除</button><span></span><button type="button" id="cancel-editor" class="secondary-button">取消</button><button type="submit" class="primary-button">保存</button></div></form></dialog>
+  <div id="toast" class="toast" role="status" hidden><span id="toast-text"></span><button id="undo" hidden>撤销</button><button id="close-toast" aria-label="关闭提示">×</button></div>
+</body>
+</html>

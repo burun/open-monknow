@@ -1,0 +1,10 @@
+node_modules/
+output/
+dist/
+.playwright-cli/
+.DS_Store
+.env
+.env.*
+!.env.example
+*.pem
+*.key
